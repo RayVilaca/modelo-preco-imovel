@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Preços dos imóveis</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        #top-bar {
+            background-color: #4821a1;
+            color: #FFF;
+            padding: 10px;
+            text-align: center;
+        }
+
+        #input-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-gap: 10px;
+            align-items: center;
+            width: 80%;
+            background-color: #F4F4F4;
+            padding: 10px;
+            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+            padding-top: 20px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .input-pair input {
+            flex: 1; /* Preenche o espaço disponível na div */
+            margin-right: 5px; /* Espaço entre os campos de entrada */
+        }
+
+        #input-container input[type="text"] {
+            padding: 10px;
+            border: none;
+            outline: none;
+            flex: 1;
+        }
+
+        #input-container button {
+            padding: 10px 20px;
+            background-color: #5634a5;
+            color: #FFF;
+            border: none;
+            outline: none;
+            cursor: pointer;
+        }
+
+        #input-container output {
+            padding: 10px 20px;
+            background-color: #e2d9f5;
+            color: #5634a5;
+            border: none;
+            outline: none;
+        }
+
+
+        @media (max-width: 1000px) {
+            #input-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 600px) {
+            #input-container {
+                grid-template-columns: repeat(1, 1fr);
+            }
+        }
+
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js" integrity="sha512-3gJwYpMe3QewGELv8k/BX9vcqhryRdzRMxVfq6ngyWXwo03GFEzjsUm8Q7RZcHPHksttq7/GFoxjCVUjkjvPdw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+</head>
+<body>
+    <div id="top-bar">
+        <h1>Previsão do Preço do Imóvel</h1>
+    </div>
+    
+    <div id="input-container">
+        <input type="text" id="sqft_living" placeholder="Tamanho do imóvel" required>
+        <input type="text" id="grade" placeholder="Nota do imóvel" required>
+        <input type="text" id="sqft_above" placeholder="Tamanho da casa acima do solo" required>
+        <input type="text" id="bathrooms" placeholder="Número de banheiros" required>
+        <input type="text" id="view" placeholder="Número de quartos com vista" required>
+        <input type="text" id="sqft_basement" placeholder="Tamanho do porão" required>
+        <input type="text" id="bedrooms" placeholder="Número de quartos" required>
+        <input type="text" id="lat" placeholder="Latitude do imóvel" required>
+        <input type="text" id="waterfront" placeholder="Vista para o mar" required>
+        <input type="text" id="floors" placeholder="Andares" required>
+        <button id="botao">Prever</button>
+        <output type="text" id="result"><b>O preço do imóvel é ...</b></output>
+    </div>
+    
+    <script type="text/javascript">
+
+        $(document).ready(function() {
+            $("#botao").on('click', function() {
+                // Obtenha os valores dos campos do formulário
+                var sqftLiving = parseInt($("#sqft_living").val()) || 0;
+                var grade = parseInt($("#grade").val()) || 0;;
+                var sqftAbove = parseInt($("#sqft_above").val()) || 0;;
+                var bathrooms = parseFloat($("#bathrooms").val()) || 0;
+                var view = parseInt($("#view").val()) || 0;
+                var sqftBasement = parseInt($("#sqft_basement").val()) || 0;
+                var bedrooms = parseInt($("#bedrooms").val()) || 0;
+                var lat = parseFloat($("#lat").val()) || 0;
+                var waterfront = parseInt($("#waterfront").val()) || 0;
+                var floors = parseFloat($("#floors").val()) || 0;
+
+                var newImovel = [sqftLiving, grade, sqftAbove, bathrooms, view, sqftBasement, bedrooms, lat, waterfront, floors];
+
+                $.ajax({
+                    url: '/prever',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(newImovel),
+                    dataType: 'json',
+                    success: function(data) {
+                        // A previsão está disponível em data.previsao
+                        var predictedPrice = data.previsao;
+
+                        // Arredonde para duas casas decimais
+                        predictedPrice = predictedPrice.toFixed(2);
+        
+                        // Exiba o preço formatado
+                        $('#result').html('<b> O preço do imóvel é $ ' + predictedPrice + '</b>');
+                    },
+                    error: function() {
+                        alert('Erro ao fazer a previsão.');
+                    }
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>
