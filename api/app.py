@@ -14,7 +14,7 @@ def home():
 @app.route('/prever', methods=['POST'])
 def prever():
     
-    arq = open('modelo_preco_imovel.pkl','rb')
+    arq = open('data/modelo_preco_imovel.pkl','rb')
     modelo = pickle.load(arq)
     arq.close()
     
@@ -29,3 +29,5 @@ def prever():
     
     return jsonify({'previsao': resultado})
 
+if __name__ == '__main__':
+    app.run(debug=True)
