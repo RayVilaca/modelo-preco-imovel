@@ -87,16 +87,21 @@
     </div>
     
     <div id="input-container">
-        <input type="text" id="sqft_living" placeholder="Tamanho do imóvel" required>
-        <input type="text" id="grade" placeholder="Nota do imóvel" required>
-        <input type="text" id="sqft_above" placeholder="Tamanho da casa acima do solo" required>
-        <input type="text" id="bathrooms" placeholder="Número de banheiros" required>
-        <input type="text" id="view" placeholder="Número de quartos com vista" required>
-        <input type="text" id="sqft_basement" placeholder="Tamanho do porão" required>
         <input type="text" id="bedrooms" placeholder="Número de quartos" required>
-        <input type="text" id="lat" placeholder="Latitude do imóvel" required>
-        <input type="text" id="waterfront" placeholder="Vista para o mar" required>
+        <input type="text" id="bathrooms" placeholder="Número de banheiros" required>
+        <input type="text" id="sqft_lot" placeholder="Tamanho do lote" required>
         <input type="text" id="floors" placeholder="Andares" required>
+        <input type="text" id="waterfront" placeholder="Vista para o mar" required>
+        <input type="text" id="view" placeholder="Número de quartos com vista" required>
+        <input type="text" id="condition" placeholder="Condição do imóvel (1 a 5)" required>
+        <input type="text" id="sqft_basement" placeholder="Tamanho do porão" required>
+        <input type="text" id="yr_built" placeholder="Ano de construção do imóvel" required>
+        <input type="text" id="yr_renovated" placeholder="Ano de renovação do imóvel" required>
+        <input type="text" id="zipcode" placeholder="CEP do imóvel" required>
+        <input type="text" id="lat" placeholder="Latitude do imóvel" required>
+        <input type="text" id="long" placeholder="Longitude do imóvel" required>
+        
+        
         <button id="botao">Prever</button>
         <output type="text" id="result"><b>O preço do imóvel é ...</b></output>
     </div>
@@ -106,18 +111,37 @@
         $(document).ready(function() {
             $("#botao").on('click', function() {
                 // Obtenha os valores dos campos do formulário
-                var sqftLiving = parseInt($("#sqft_living").val()) || 0;
-                var grade = parseInt($("#grade").val()) || 0;;
-                var sqftAbove = parseInt($("#sqft_above").val()) || 0;;
-                var bathrooms = parseFloat($("#bathrooms").val()) || 0;
-                var view = parseInt($("#view").val()) || 0;
-                var sqftBasement = parseInt($("#sqft_basement").val()) || 0;
                 var bedrooms = parseInt($("#bedrooms").val()) || 0;
-                var lat = parseFloat($("#lat").val()) || 0;
-                var waterfront = parseInt($("#waterfront").val()) || 0;
+                var bathrooms = parseFloat($("#bathrooms").val()) || 0;
+                var sqftLot = parseInt($("#sqft_lot").val()) || 0;
                 var floors = parseFloat($("#floors").val()) || 0;
+                var waterfront = parseInt($("#waterfront").val()) || 0;
+                var view = parseInt($("#view").val()) || 0;
+                var condition = parseInt($("#condition").val()) || 0;
+                var sqftBasement = parseInt($("#sqft_basement").val()) || 0;
+                var yrBuilt = parseInt($("#yr_built").val()) || 0;
+                var yrRenovated = parseInt($("#yr_renovated").val()) || 0;
+                var zipcode = parseInt($("#zipcode").val()) || 0;
+                var lat = parseFloat($("#lat").val()) || 0;
+                var long = parseFloat($("#long").val()) || 0;
+                
+                
 
-                var newImovel = [sqftLiving, grade, sqftAbove, bathrooms, view, sqftBasement, bedrooms, lat, waterfront, floors];
+                var newImovel = [
+                    bedrooms,
+                    bathrooms,
+                    sqftLot,
+                    floors,
+                    waterfront,
+                    view,
+                    condition,
+                    sqftBasement,
+                    yrBuilt,
+                    yrRenovated,
+                    zipcode,
+                    lat,
+                    long, 
+                    ];
 
                 $.ajax({
                     url: '/prever',
